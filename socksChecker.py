@@ -17,26 +17,14 @@ class ThreadChecker(threading.Thread):
 		if(len(data)<2):
 			# Null response
 			return False
-		if data[0] != "\x00":
-			# Bad data
-			return False
-		if data[1] != "\x5A":
-			# Server returned an error
-			return False
-		return True
+		return False if data[0] != "\x00" else data[1] == "\x5A"
 	def isSocks5(self, host, port, soc):
 		soc.sendall("\x05\x01\x00")
 		data = soc.recv(2)
 		if(len(data)<2):
 			# Null response
 			return False
-		if data[0] != "\x05":
-			# Not socks5
-			return False
-		if data[1] != "\x00":
-			# Requires authentication
-			return False
-		return True
+		return False if data[0] != "\x05" else data[1] == "\x00"
 	def getSocksVersion(self, proxy):
 		host = proxy.split(":")[0]
 		try:
@@ -84,23 +72,21 @@ class ThreadWriter(threading.Thread):
 	def run(self):
 		while True:
 			toWrite = self.q.qsize()
-			outputFile = open(self.outputPath, 'a+')
-			for i in xrange(toWrite):
-				proxy = self.q.get()
-				outputFile.write(proxy + "\n")
-				self.q.task_done()
-			outputFile.close()
+			with open(self.outputPath, 'a+') as outputFile:
+				for _ in xrange(toWrite):
+					proxy = self.q.get()
+					outputFile.write(proxy + "\n")
+					self.q.task_done()
 			time.sleep(10)
 checkQueue = Queue.Queue()
 socksProxies = Queue.Queue()
-inputFile = open(raw_input("Proxy list: "), 'r')
-outputPath = raw_input("Output file: ")
-threads = int(raw_input("Number of threads: "))
-timeout = int(raw_input("Timeout(seconds): "))
-for line in inputFile.readlines():
-	checkQueue.put(line.strip('\n'))
-inputFile.close()
-for i in xrange(threads):
+with open(raw_input("Proxy list: "), 'r') as inputFile:
+	outputPath = raw_input("Output file: ")
+	threads = int(raw_input("Number of threads: "))
+	timeout = int(raw_input("Timeout(seconds): "))
+	for line in inputFile:
+		checkQueue.put(line.strip('\n'))
+for _ in xrange(threads):
 	t = ThreadChecker(checkQueue, timeout)
 	t.setDaemon(True)
 	t.start()
