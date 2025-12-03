@@ -1,167 +1,223 @@
+<p align="center">
+  <img src="https://custom-image-placeholder-url.com/proxypulse-high-performance-validator-hero.png" alt="ProxyPulse Hero Banner: High-Performance SOCKS Validator CLI" width="100%">
+</p>
+
 # ProxyPulse-High-Performance-SOCKS-Validator-CLI
 
-![ProxyPulse Hero Banner](https://raw.githubusercontent.com/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI/main/assets/banner.png)
+<!-- Badge Section (Visual Authority) -->
+[![GitHub Actions Status](https://img.shields.io/github/actions/workflow/status/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI/ci.yml?branch=main&style=flat-square&label=Build%20Status)](https://github.com/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI/actions/workflows/ci.yml)
+[![Code Coverage](https://codecov.io/gh/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI/branch/main/graph/badge.svg?style=flat-square)](https://codecov.io/gh/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI)
+[![Python Version](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![Linter/Formatter](https://img.shields.io/badge/Linter-Ruff-purple?style=flat-square&logo=ruff)](https://github.com/astral-sh/ruff)
+[![License](https://img.shields.io/badge/License-CC%20BY--NC%204.0-blue.svg?style=flat-square)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI?style=flat-square&cacheSeconds=3600)](https://github.com/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI/stargazers)
 
-| Status | Metrics | Standards | Tech Stack |
-| :---: | :---: | :---: | :---: |
-| [![Build Status](https://img.shields.io/github/actions/workflow/status/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI/ci.yml?branch=main&style=flat-square&label=CI%20Build)](https://github.com/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI/actions/workflows/ci.yml) | [![Code Coverage](https://codecov.io/gh/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI/branch/main/graph/badge.svg?style=flat-square)](https://codecov.io/gh/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI) | [![Linting: Ruff](https://img.shields.io/badge/Linting-Ruff-6E40C9?style=flat-square&logo=ruff)](https://github.com/astral-sh/ruff) | [![Python 3.10+](https://img.shields.io/badge/Python-3.10+%7C%203.11%20%7C%203.12-blue?style=flat-square&logo=python)](https://www.python.org/)
-| [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-blue.svg?style=flat-square)](LICENSE) | [![GitHub Stars](https://img.shields.io/github/stars/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI?style=flat-square)](https://github.com/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI/stargazers) | [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg?style=flat-square)](.github/CONTRIBUTING.md) | [![Dependencies: uv](https://img.shields.io/badge/Dependencies-uv-2B88DD?style=flat-square&logo=git%20lfs)](https://github.com/astral-sh/uv)
+<p align="center">
+  <a href="https://github.com/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI">
+    <img src="https://img.shields.io/badge/Star%20This%20Repo-⭐-black?style=for-the-badge">
+  </a>
+</p>
 
-> ⭐ **Star this repository** to support the development of high-performance networking tools.
+---
 
-## 🚀 BLUF (Bottom Line Up Front)
+## 🚀 Overview (BLUF - Bottom Line Up Front)
 
-**ProxyPulse** is a lightning-fast, highly concurrent Python CLI engineered for the immediate validation of large lists of SOCKS4 and SOCKS5 proxies. Utilizing native, non-blocking socket programming, it maximizes throughput, delivering verified, clean proxy lists with superior performance and zero reliance on external proxy testing APIs.
+**ProxyPulse** is an elite, high-performance command-line interface (CLI) tool designed for rapid, multithreaded validation of SOCKS4 and SOCKS5 proxy lists. Utilizing Python's native concurrency capabilities, it minimizes latency and maximizes throughput, providing zero-defect filtering of operational proxies for critical networking tasks.
+
+This tool is optimized for system administrators, security researchers, and developers who require a verified, high-quality pool of SOCKS endpoints without reliance on external or third-party validation services.
+
+---
 
 ## 📋 Table of Contents
 
-- [Architecture & Design](#-architecture--design)
-- [Installation](#-installation)
-- [Usage & Commands](#-usage--commands)
-- [Development Standards](#-development-standards)
-- [🤖 AI Agent Directives (Technical Spec)](#-ai-agent-directives-technical-spec)
+1.  [🚀 Overview](#-overview-bluf---bottom-line-up-front)
+2.  [✨ Key Features](#-key-features)
+3.  [📦 Installation & Setup](#-installation--setup)
+4.  [⚙️ Usage](#️-usage)
+5.  [🏛️ Architectural Structure](#️-architectural-structure)
+6.  [🤖 AI Agent Directives (System Specification)](#-ai-agent-directives-system-specification)
+7.  [🛠️ Development & Principles](#-development--principles)
+8.  [📜 License](#-license)
 
-## 🏗️ Architecture & Design
+---
 
-ProxyPulse is built upon a **Modular Monolith** pattern, separating the concerns of I/O handling, the core concurrent validation engine, and the CLI interface. This ensures the core networking logic remains highly optimized and independent of the user interface layer.
+## ✨ Key Features
 
-mermaid
-graph TD
-    A[ProxyPulse CLI (Click)] --> B{Input Handler (File/Stdin)};
-    B --> C[Core Validation Engine];
-    C -- Concurrency Pool --> D(Concurrent Socket Tester);
-    D --> E[SOCKS4/SOCKS5 Protocol Adapter];
-    E --> F((External Proxy IP:Port));
-    F -- Success/Failure --> D;
-    D -- Working Proxies --> G[Output Handler (Stdout/File)];
-    G --> H[Validated Proxy List];
-    
-    style C fill:#f9f,stroke:#333,stroke-width:2px
-    style D fill:#ccf,stroke:#333,stroke-width:2px
+*   **Multithreaded Validation:** Achieves high concurrency via `concurrent.futures`, enabling thousands of checks per minute.
+*   **SOCKS Protocol Support:** Full verification for SOCKS4 and SOCKS5 standards.
+*   **Zero Dependency Core:** Operates purely on Python's standard library for maximum stability and minimal footprint.
+*   **Time-Capped Connectivity:** Configurable timeout threshold for aggressive validation filtering.
+*   **Clean Output Generation:** Automatically saves validated, working proxies to a defined output file (`--output`).
 
+---
 
-## 📦 Installation
+## 📦 Installation & Setup
 
-We utilize `uv` for robust, rapid dependency management and environment isolation.
+ProxyPulse requires Python 3.10+ and uses **uv** for efficient dependency management.
 
 ### Prerequisites
+Ensure you have Python 3.10 or later installed.
 
-Ensure you have Python 3.10+ installed and the `uv` package manager (recommended for speed).
+### Step 1: Clone the Repository
 
 bash
-# 1. Install uv (if not present)
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# 2. Clone the repository
-git clone https://github.com/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI
+git clone https://github.com/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI.git
 cd ProxyPulse-High-Performance-SOCKS-Validator-CLI
 
-# 3. Create virtual environment and install dependencies using uv
-uv venv
-source .venv/bin/activate  # or .\.venv\Scripts\activate on Windows
-uv sync
 
-# 4. Install the CLI executable
-uv pip install -e .
+### Step 2: Install Dependencies using uv
 
-
-## ⚙️ Usage & Commands
-
-The main command is `proxypulse`.
-
-### Validating a Proxy List
-
-Validate a file of proxies (`ip:port` per line) with a 5-second timeout, outputting the results to a new file.
+We recommend `uv` for lightning-fast installation and dependency resolution.
 
 bash
-proxypulse validate proxies.txt \
-    --timeout 5 \
+# Install uv if you don't have it
+pip install uv
+
+# Create and activate virtual environment
+uv venv
+
+# Install project dependencies (including development tools like Ruff, Pytest)
+uv sync
+
+
+---
+
+## ⚙️ Usage
+
+The CLI is structured around the `proxypulse` entry point.
+
+### Basic Validation
+
+Validate a list of proxies from `proxies.txt` with default settings (10 second timeout, 50 threads).
+
+bash
+python proxypulse/cli/main.py --input proxies.txt
+# OR
+uv run proxypulse --input proxies.txt
+
+
+### Advanced Usage (High Performance)
+
+Validate the list, setting a strict 3-second timeout, using 200 threads, and saving the output to `working_socks.txt`.
+
+bash
+uv run proxypulse \
+    --input large_list.txt \
     --threads 200 \
-    -o validated_socks.txt
+    --timeout 3 \
+    --output working_socks.txt
 
 
-| Option | Description | Default |
+| Argument | Description | Required | Default |
+| :--- | :--- | :--- | :--- |
+| `--input <path>` | Path to the input file containing IP:Port proxies (one per line). | Yes | N/A |
+| `--output <path>` | Path to save the validated, working proxies. | No | `working_proxies.txt` |
+| `--threads <N>` | Number of concurrent threads for validation. Maximize based on core count. | No | 50 |
+| `--timeout <N>` | Connection timeout in seconds. | No | 10 |
+| `--verbose` | Enable verbose logging during the validation process. | No | False |
+
+---
+
+## 🏛️ Architectural Structure
+
+ProxyPulse adheres to a **Modular Monolith** structure, separating the concurrency core from the networking logic and the command-line interface, ensuring clear boundaries and testability.
+
+text
+.
+├── proxypulse/
+│   ├── __init__.py
+│   ├── cli/
+│   │   ├── __init__.py
+│   │   └── main.py       # Click CLI Entry Point & Argument Parsing
+│   ├── core/
+│   │   ├── __init__.py
+│   │   └── validator.py  # Orchestrates multithreaded proxy checking
+│   └── networking/
+│       ├── __init__.py
+│       └── connection.py # Low-level socket handling for SOCKS connectivity tests
+├── tests/
+│   ├── unit_tests/
+│   └── integration_tests/
+├── pyproject.toml        # Project definition, dependencies (uv) & configuration (Ruff/Pytest)
+└── README.md
+
+
+---
+
+## 🤖 AI Agent Directives (System Specification)
+
+The following directives detail the mandatory architectural and toolchain standards for any future modifications or maintenance performed by automated agents or human developers.
+
+<details>
+<summary><strong>SYSTEM SPECIFICATION (APEX TECHNICAL AUTHORITY)</strong></summary>
+
+### 1. IDENTITY & PRIME DIRECTIVE
+
+*   **Role:** Senior Principal Software Architect, enforcing 2026 standards.
+*   **Context:** Current Date is **December 2025**.
+*   **Philosophy:** "Zero-Defect, High-Velocity, Future-Proof."
+
+### 2. CORE TECHNOLOGY STACK
+
+This repository is built upon a high-performance Python ecosystem designed for concurrency and speed.
+
+| Component | Tool / Standard | Purpose |
 | :--- | :--- | :--- |
-| `-i`, `--input <path>` | Path to the input file containing proxies (IP:PORT). | Required |
-| `-o`, `--output <path>` | Path to save the list of working proxies. | stdout |
-| `-t`, `--timeout <seconds>` | Connection timeout limit in seconds. | 10 |
-| `-h`, `--threads <count>` | Maximum number of concurrent validation threads. | 100 |
-| `--socks4` | Only check for SOCKS4 proxies. | False |
-| `--socks5` | Only check for SOCKS5 proxies. | True (Default checks both) |
+| **Runtime** | Python 3.10+ | Mandatory minimum version for optimization benefits. |
+| **Package Manager** | `uv` | Used exclusively for dependency resolution, installation, and virtual environment management. |
+| **Linter/Formatter** | `Ruff` | Enforced for all source code. Configuration resides in `pyproject.toml`. |
+| **Testing Framework** | `Pytest` | Standard for all unit and integration tests. Coverage must remain above 90%. |
+| **Concurrency** | `concurrent.futures` | Preferred module for thread and process pooling to manage simultaneous proxy checks. |
 
-## 📐 Development Standards
+### 3. ARCHITECTURAL PATTERNS
 
-### Core Principles
+*   **Modular Monolith:** Strict separation of concerns between `cli` (input/output), `core` (workflow orchestration), and `networking` (low-level socket operations).
+*   **Performance First:** The `networking/connection.py` layer must prioritize non-blocking I/O patterns where possible, though currently relies on synchronous socket operations managed by a high thread count via `concurrent.futures.ThreadPoolExecutor`.
+*   **SOLID Principles:** All classes must adhere to Single Responsibility Principle (SRP). Avoid large, monolithic validator functions.
 
-This project adheres strictly to the **SOLID** principles of software design and focuses on achieving maximum performance through native Python concurrency primitives, avoiding unnecessary external libraries.
+### 4. VERIFICATION COMMANDS
 
-*   **DRY (Don't Repeat Yourself):** Logic for socket connection and protocol negotiation is centralized.
-*   **YAGNI (You Ain't Gonna Need It):** Features are minimal, focused solely on high-speed SOCKS validation.
+All changes MUST pass the following verification checks:
 
-### Available Scripts
+1.  **Dependency Check:** Ensure environment integrity.
+    bash
+    uv check
+    
+2.  **Linting & Formatting (Ruff):** Run fixes and dry-run check.
+    bash
+    uv run ruff check .
+    uv run ruff format --check .
+    
+3.  **Test Execution & Coverage:** Full test suite execution.
+    bash
+    uv run pytest --cov=proxypulse --cov-report=xml
+    
+</details>
+
+---
+
+## 🛠️ Development & Principles
+
+### Development Scripts (Defined in `pyproject.toml` or `scripts/`)
 
 | Script | Command | Description |
 | :--- | :--- | :--- |
-| `setup` | `uv sync` | Installs all required development and runtime dependencies. |
-| `lint` | `ruff check .` | Runs the ultra-fast Ruff linter against all source code. |
-| `format` | `ruff format .` | Auto-formats code using Ruff standards. |
-| `test` | `pytest -v` | Executes all unit and integration tests defined in the `tests/` directory. |
-| `ci` | `uv sync && ruff check . && pytest --cov=proxypulse` | Full continuous integration pipeline check. |
-
-
-<details>
-<summary><h2>🤖 AI Agent Directives (Technical Spec)</h2></summary>
-
-# SYSTEM: APEX TECHNICAL AUTHORITY & ELITE ARCHITECT (DECEMBER 2025 EDITION)
-
-## 1. IDENTITY & PRIME DIRECTIVE
-
-**Role:** You are a Senior Principal Software Architect and Master Technical Copywriter. You operate with absolute precision, enforcing FAANG-level standards.
-**Context:** Current Date is **December 2025**. You are building for the 2026 standard.
-
----
-
-## 2. PROJECT-SPECIFIC STACK & ARCHITECTURE
-
-This repository, `ProxyPulse-High-Performance-SOCKS-Validator-CLI`, is a core Python networking utility focused on maximum concurrent I/O performance.
-
-### Primary Tech Stack
-
-*   **Language:** Python 3.10+ (Prioritize features from 3.11/3.12 for performance).
-*   **Package Manager:** `uv` (Used exclusively for fast dependency resolution and environment management).
-*   **Linting/Formatting:** `Ruff` (Mandatory for ultra-fast, zero-config code quality enforcement).
-*   **Testing Framework:** `Pytest` (Required for unit and integration testing of socket handling).
-*   **CLI Framework:** `Click` (Used for defining the primary user interface commands).
-
-### Architectural Pattern: Modular Monolith
-
-The codebase is structured to ensure separation of networking logic from CLI parsing:
-
-1.  **`proxypulse.core`:** Contains the high-performance concurrent socket and proxy protocol negotiation logic (SOCKS4/SOCKS5). This module must be dependency-free.
-2.  **`proxypulse.cli`:** Handles command parsing, I/O file operations, and thread management.
-3.  **Error Handling:** Use custom exceptions for network failures, timeouts, and protocol errors, ensuring graceful shutdowns.
-
-### Performance Mandate
-
-**Mandate:** Validation must leverage Python's native concurrency model (e.g., `ThreadPoolExecutor` or `asyncio` for non-blocking I/O) to handle thousands of concurrent connections. Do not rely on sequential processing.
-
----
-
-## 3. DEVELOPMENT & VERIFICATION PROTOCOL
-
-### Quality Assurance Gates
-
-| Gate | Command | Pass Condition |
-| :--- | :--- | :--- |
-| **Dependencies** | `uv sync` | All packages resolved and environment set up. |
-| **Code Quality** | `ruff check .` | Zero `E` or `W` errors. |
-| **Format Standard** | `ruff format --check .` | Zero formatting differences found. |
-| **Unit Testing** | `pytest` | 100% test pass rate. Focus on edge cases like malformed proxies and connection resets. |
+| `lint` | `uv run ruff .` | Runs the Ruff linter and formatter checks. |
+| `format` | `uv run ruff --fix .` | Applies automatic code formatting and fixes. |
+| `test` | `uv run pytest` | Executes the full test suite. |
+| `test-coverage` | `uv run pytest --cov=proxypulse` | Runs tests and generates a code coverage report. |
+| `start` | `uv run proxypulse --help` | Executes the main CLI entry point. |
 
 ### Core Engineering Principles
 
-*   **SOLID:** Specifically, adhere to the Single Responsibility Principle (SRP): the socket handler should only handle the socket, and the parser should only parse.
-*   **Agnosticism:** The core validation engine must remain protocol-agnostic (easily extendable to HTTP proxies if needed).
-*   **Zero-Dependency Core:** The `core` module must not introduce heavy external dependencies, relying on Python's standard library (`socket`, `threading`, `concurrent`).
+All contributions must strictly adhere to these standards:
 
-</details>
+1.  **DRY (Don't Repeat Yourself):** Abstract shared networking logic.
+2.  **YAGNI (You Aren't Gonna Need It):** Focus solely on robust SOCKS validation (SOCKS4/5). Resist feature creep like HTTP/HTTPS proxy support unless architecturally isolated.
+3.  **Optimized Concurrency:** Ensure thread management overhead is minimized relative to connection latency. Default thread count (50) is a pragmatic balance, but large operations may require tuning.
+
+---
+
+## 📜 License
+
+This project is distributed under the **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)** License. See the [LICENSE](LICENSE) file for full details.
