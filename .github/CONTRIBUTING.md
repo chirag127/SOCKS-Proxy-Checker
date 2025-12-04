@@ -1,122 +1,83 @@
-# Contributing to ProxyPulse-High-Performance-SOCKS-Validator-CLI
+# 🤝 Contribution Guidelines for ProxyPulse-High-Performance-SOCKS-Validator-CLI
 
-Thank you for considering contributing to **ProxyPulse-High-Performance-SOCKS-Validator-CLI**! We aim to maintain a high-quality, professional, and high-velocity project, adhering to FAANG-level standards and the principles of "Managing the Unmanageable."
+This project adheres to the standards set by the **Apex Technical Authority**. Contributions are welcomed from engineers dedicated to **Zero-Defect, High-Velocity, Future-Proof** development.
 
-## 1. Code of Conduct
+## 1. The Apex Philosophy
 
-This project adheres to the Contributor Covenant Code of Conduct (v2.1). Please read the full text in `CODE_OF_CONDUCT.md` to understand the behaviors that are expected of you and other contributors.
+We operate under the principle of **"Managing the Unmanageable."** Contributions must align with high-performance standards, prioritizing efficiency, security, and maintainability. Every Pull Request will be scrutinized for adherence to SOLID principles, DRY coding, and comprehensive testing.
 
-## 2. Project Philosophy & Standards
+## 2. Supported Stack & Requirements
 
-*   **Zero-Defect, High-Velocity, Future-Proof:** Every contribution should strive for perfection, enable rapid development, and be built with longevity in mind.
-*   **Professional Archival Standard:** All code, documentation, and metadata are treated with the utmost importance, even for archived projects.
-*   **Apex Technical Authority:** We expect contributions to align with modern best practices and the standards defined in the project's `AGENTS.md`.
+This repository is built using the **Python 3.10+ Apex Toolchain**.
 
-## 3. Getting Started
+*   **Language:** Python
+*   **Dependency Management:** `uv` (Must manage dependencies via `pyproject.toml`)
+*   **Linting/Formatting:** `Ruff` (Mandatory pre-commit hook)
+*   **Testing:** `Pytest` (Minimum 90% coverage required for feature branches)
+*   **Architecture:** Modular Monolith pattern.
 
-### 3.1. Prerequisites
+## 3. Contribution Workflow
 
-Ensure you have the following installed:
+Follow these steps for submitting meaningful contributions:
 
-*   **Python:** 3.10+ (as defined in `AGENTS.md` for Python projects).
-*   **uv:** For managing Python packages and virtual environments.
-*   **Git:** For version control.
+### Step 1: Setup & Environment Synchronization
 
-### 3.2. Forking and Cloning
-
-1.  Fork the repository: `https://github.com/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI`
-2.  Clone your forked repository:
+1.  **Fork** this repository to your personal account.
+2.  **Clone** your fork locally:
     bash
     git clone https://github.com/chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI.git
     cd ProxyPulse-High-Performance-SOCKS-Validator-CLI
     
-
-### 3.3. Setting Up the Development Environment
-
-It is highly recommended to use `uv` for managing dependencies and creating a virtual environment.
-
-1.  **Create and activate a virtual environment:**
+3.  **Install Dependencies** using the standard Apex Python manager (`uv`):
     bash
-    uv venv
-    # On Linux/macOS:
-    source .venv/bin/activate
-    # On Windows:
-    .venv\Scripts\activate
+    uv sync  # Installs dependencies listed in pyproject.toml
     
-2.  **Install development dependencies:**
+4.  **Install Pre-commit Hooks:** Ensure local validation against Apex standards is enforced:
     bash
-    uv pip install -r requirements-dev.txt
+    pip install pre-commit
+    pre-commit install
     
 
-## 4. Contribution Workflow
+### Step 2: Feature Development & Isolation
 
-We follow a standard Git workflow for contributions:
-
-1.  **Create a New Branch:** Always work on a separate branch for your feature or fix. Use a descriptive name (e.g., `feature/add-new-proxy-type`, `fix/improving-error-handling`).
+1.  Create a new, descriptive branch. Follow the naming convention: `feat/short-description` or `fix/bug-id`.
     bash
-    git checkout -b your-branch-name
+    git checkout -b feat/fast-udp-check
     
-2.  **Make Your Changes:** Implement your code, adhering to the project's coding standards and architectural guidelines (refer to `AGENTS.md`).
-3.  **Run Tests:** Ensure all tests pass.
+2.  Develop your changes, ensuring **100% alignment** with the existing architectural patterns.
+3.  **Testing is Mandatory:** Write new unit or integration tests (`Pytest`) covering **all** new logic paths. Run tests locally before committing:
     bash
     pytest
     
-4.  **Lint and Format:** Use `ruff` to ensure code quality and consistency.
+4.  **Linting:** Ensure all code passes `Ruff` checks:
     bash
-    ruff check --fix .
-    ruff format .
+    pre-commit run --all-files
     
-5.  **Commit Your Changes:** Write clear, concise commit messages.
-    bash
-    git add .
-    git commit -m "feat: Add description of your changes"
-    
-6.  **Push to Your Fork:** Push your branch to your forked repository.
-    bash
-    git push origin your-branch-name
-    
-7.  **Open a Pull Request:** Create a Pull Request from your branch to the `main` branch of the `chirag127/ProxyPulse-High-Performance-SOCKS-Validator-CLI` repository.
 
-## 5. Contribution Guidelines
+### Step 3: Pull Request Submission
 
-### 5.1. Code Quality
+1.  **Commit** your changes using Conventional Commits format (e.g., `feat: Add new SOCKS5 handshake enhancement`).
+2.  **Push** your branch to your fork.
+3.  Open a **Pull Request** against `chirag127:main`.
 
-*   **Pythonic Code:** Adhere to PEP 8 standards, enhanced by `ruff`'s strict configuration.
-*   **Modularity:** Keep code modular and well-organized. Follow the principles outlined in `AGENTS.md`.
-*   **Type Hinting:** Use type hints extensively for better code clarity and maintainability.
-*   **Error Handling:** Implement robust error handling and logging.
-*   **Documentation:** Write clear docstrings for all functions, classes, and modules.
+## 4. Pull Request Requirements
 
-### 5.2. Testing
+Every PR **MUST** satisfy these criteria before merging:
 
-*   **Unit Tests:** Write comprehensive unit tests using `pytest` for all new functionality and bug fixes.
-*   **Integration Tests:** Include integration tests where appropriate to verify interactions between different components.
-*   **Test Coverage:** Aim for high test coverage. Run `pytest --cov=proxypulse` to check coverage.
+*   **Template Usage:** Fill out the entire `.github/PULL_REQUEST_TEMPLATE.md`.
+*   **Atomic Changes:** Each PR should address one logical concern. Do not mix feature work with documentation updates or unrelated fixes.
+*   **Test Coverage:** Evidence of new or updated tests that increase or maintain high coverage.
+*   **Code Review:** Pass all automated checks enforced by `.github/workflows/ci.yml`.
+*   **Documentation:** Update relevant sections of `README.md` if the change affects usage or installation.
 
-### 5.3. Commit Messages
+## 5. Reporting Issues & Security
 
-Follow the Conventional Commits specification (e.g., `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`).
+*   **Bugs:** Report all bugs using the dedicated template: `.github/ISSUE_TEMPLATE/bug_report.md`.
+*   **Security Vulnerabilities:** For security-sensitive issues, **DO NOT** open a public issue. Follow the guidelines in `.github/SECURITY.md` for responsible disclosure.
 
-### 5.4. Pull Requests
+## 6. Code of Conduct
 
-*   **Clear Description:** Provide a detailed description of your changes, including the problem solved and the approach taken.
-*   **Link to Issues:** If your PR addresses an issue, reference it using keywords like `closes #issue_number`.
-*   **Single Responsibility:** Aim for Pull Requests that address a single concern or feature.
+We expect all contributors to adhere to a professional, technical, and respectful dialogue. Disagreements must be framed around technical merit, not personal critique. Review the detailed expectations in `.github/CODE_OF_CONDUCT.md` (Assumed existence based on best practices).
 
-## 6. Reporting Bugs
-
-If you find a bug, please open an issue on GitHub. Use the provided `bug_report.md` template under `.github/ISSUE_TEMPLATE/` to ensure all necessary information is captured.
-
-## 7. Suggesting Enhancements
-
-Feature requests can also be submitted as GitHub issues, clearly outlining the proposed enhancement and its benefits.
-
-## 8. Security
-
-If you discover a security vulnerability, please follow the guidelines in `.github/SECURITY.md`.
-
-## 9. Project Structure & Architecture
-
-Refer to the `AGENTS.md` file for detailed information on the project's architecture, tech stack, and development principles. This includes adherence to Python's best practices, the use of `uv`, `ruff`, and `pytest`, and the overall modular design.
-
-Thank you for helping to improve **ProxyPulse-High-Performance-SOCKS-Validator-CLI**!
+--- 
+*Thank you for elevating the standard of this repository.*
